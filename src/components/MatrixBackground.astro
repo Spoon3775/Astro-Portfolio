@@ -1,0 +1,130 @@
+---
+// Matrix-style digital rain background: falling columns of code characters,
+// a scanline sweep, and a soft glow. Pure CSS — no canvas, no JS.
+// Columns are generated at build time so there is zero client JS.
+
+// Deterministic pseudo-random so builds are stable.
+function rng(seed: number) {
+  return () => {
+    seed = (seed * 16807) % 2147483647;
+    return (seed - 1) / 2147483646;
+  };
+}
+
+const GLYPHS = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ<>{}/=+*#$%&';
+const rand = rng(42);
+
+const COLUMNS = Array.from({ length: 40 }, (_, i) => {
+  const chars = Array.from({ length: 18 }, () => GLYPHS[Math.floor(rand() * GLYPHS.length)]);
+  return {
+    left: (i / 40) * 100 + rand() * 1.5,
+    delay: -rand() * 14,
+    duration: 7 + rand() * 9,
+    chars,
+  };
+});
+---
+
+<div class="matrix-bg" aria-hidden="true">
+  {
+    COLUMNS.map((col) => (
+      <span
+        class="rain-col"
+        style={`left: ${col.left}%; animation-delay: ${col.delay}s; animation-duration: ${col.duration}s;`}
+      >
+        {col.chars.map((ch, i) => (
+          <span class:list={['glyph', i === 0 && 'head']}>{ch}</span>
+        ))}
+      </span>
+    ))
+  }
+  <div class="scanline"></div>
+  <div class="fade"></div>
+</div>
+
+<style>
+  .matrix-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(6, 78, 59, 0.35), transparent 70%),
+      #020617;
+  }
+
+  /* Each column is a vertical strip of glyphs falling down the screen. */
+  .rain-col {
+    position: absolute;
+    top: -100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: ui-monospace, 'Cascadia Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    animation: fall linear infinite;
+    will-change: transform;
+    user-select: none;
+  }
+
+  @keyframes fall {
+    from { transform: translateY(0); }
+    to { transform: translateY(200vh); }
+  }
+
+  .glyph {
+    color: rgba(52, 211, 153, 0.28);
+  }
+
+  /* The leading character of each column glows bright. */
+  .glyph.head {
+    color: rgba(209, 250, 229, 0.95);
+    text-shadow:
+      0 0 8px rgba(52, 211, 153, 0.9),
+      0 0 20px rgba(16, 185, 129, 0.5);
+  }
+
+  /* Trailing fade so the tail of each column dissolves. */
+  .rain-col .glyph:nth-child(n + 10) {
+    opacity: 0.5;
+  }
+  .rain-col .glyph:nth-child(n + 14) {
+    opacity: 0.2;
+  }
+
+  /* Slow horizontal scanline sweep for CRT flavor. */
+  .scanline {
+    position: absolute;
+    inset-inline: 0;
+    height: 120px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(52, 211, 153, 0.05) 45%,
+      rgba(52, 211, 153, 0.12) 50%,
+      rgba(52, 211, 153, 0.05) 55%,
+      transparent
+    );
+    animation: scan 9s linear infinite;
+  }
+
+  @keyframes scan {
+    from { top: -15%; }
+    to { top: 110%; }
+  }
+
+  /* Darken toward the bottom so content stays readable. */
+  .fade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(2, 6, 23, 0.55), transparent 30%, transparent 65%, rgba(2, 6, 23, 0.7)),
+      radial-gradient(ellipse 90% 70% at 50% 45%, transparent 50%, rgba(2, 6, 23, 0.6) 100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rain-col { animation-play-state: paused; }
+    .scanline { animation: none; opacity: 0; }
+  }
+</style>

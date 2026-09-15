@@ -23,12 +23,11 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
-    title: 'Project One',
+    title: 'Cade',
     description:
-      'A placeholder project description. Replace this with a short summary of what it does and what makes it interesting.',
-    tags: ['TypeScript', 'React', 'Node.js'],
-    github: 'https://github.com/your-username/project-one',
-    demo: 'https://example.com',
+      'An Android Music application, designed to run using the Spotify API.',
+    tags: ['Kotlin', 'Android 10'],
+    github: 'https://github.com/Spoon3775/Cade',
   },
   {
     title: 'Project Two',

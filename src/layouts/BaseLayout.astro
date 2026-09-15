@@ -1,5 +1,6 @@
 ---
 import { SITE } from '../config';
+import AnimatedBackground from '../components/AnimatedBackground.astro';
 
 interface Props {
   title?: string;
@@ -25,6 +26,7 @@ const { title = SITE.title, description = SITE.description } = Astro.props as Pr
   <body
     class="min-h-screen bg-slate-950 text-slate-200 antialiased selection:bg-emerald-400/30 selection:text-emerald-200"
   >
+    <AnimatedBackground />
     <slot />
   </body>
 </html>

@@ -30,11 +30,11 @@ export const PROJECTS: Project[] = [
     github: 'https://github.com/Spoon3775/Cade',
   },
   {
-    title: 'Project Two',
+    title: 'Monty',
     description:
-      'Another placeholder description. Highlight the problem you solved, the stack you used, and any notable results.',
-    tags: ['Python', 'FastAPI', 'PostgreSQL'],
-    github: 'https://github.com/your-username/project-two',
+      'A Discord bot built in python, providing a variety of commands, features and integrations.',
+    tags: ['Python', 'Discord', 'PostgreSQL'],
+    github: 'https://github.com/Spoon3775/Monty',
   },
   {
     title: 'Project Three',

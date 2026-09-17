@@ -39,16 +39,16 @@ export const PROJECTS: Project[] = [
   {
     title: 'Project Three',
     description:
-      'A third placeholder project. Link the repository and add a live demo URL if you have one.',
-    tags: ['Go', 'Docker', 'Kubernetes'],
-    github: 'https://github.com/your-username/project-three',
+      'Coming Soon...',
+    tags: [''],
+    github: '',
   },
   {
     title: 'Project Four',
     description:
-      'Yet another placeholder. Keep descriptions concise: one or two sentences is plenty.',
-    tags: ['Rust', 'WebAssembly'],
-    github: 'https://github.com/your-username/project-four',
+      'Coming Soon...',
+    tags: [''],
+    github: '',
   },
 ];
 
